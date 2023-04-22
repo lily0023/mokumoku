@@ -13,6 +13,7 @@
             </div>
             <h1>
               <%= @event.title %>
+              <%= '【女性限定】' if @event.only_woman? %>
             </h1>
             <% if logged_in? %>
               <div class="ms-auto">
@@ -93,12 +94,11 @@
                               data: { confirm: 'キャンセルします' }
                   %>
                 <% else %>
-                  <%= link_to 'このもくもく会に参加する',
-                              event_attendance_url(@event),
-                              class: 'btn btn-primary',
-                              method: :post,
-                              data: { confirm: '申し込みます' }
-                  %>
+                  <% if @event.only_woman? %>
+                    <%= only_woman_user_join %>
+                  <% else %>
+                    <%= all_user_join %>
+                  <% end %>
                 <% end %>
               <% end %>
             <% end %>
@@ -111,9 +111,9 @@
           参加者（<%= @event.attendees.size %>人）
         </div>
         <div class="card-body">
-           <ul class="list-unstyled">
-             <%= render partial: 'events/attendee', collection: @event.attendees %>
-           </ul>
+          <ul class="list-unstyled">
+            <%= render partial: 'events/attendee', collection: @event.attendees %>
+          </ul>
         </div>
       </div>
 

@@ -20,6 +20,8 @@ class Event < ApplicationRecord
     validates :held_at
   end
 
+  validates :only_woman, inclusion: [true, false]
+
   def past?
     held_at < Time.current
   end
